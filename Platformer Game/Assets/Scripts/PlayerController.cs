@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
 
     //Animation Variables
-    Animater anim;
+    Animator anim;
     public bool moving = false;
 
     //Movement Variables
@@ -58,9 +59,29 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
         
+        if((Input.GetKeyDown("w") || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded == true)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+
+        }
+
+        if (Input.GetKeyUp ("a") || Input.GetKeyUp ("d") || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeUp(KeyCode.RightArrow))
+        {
+            moving = false;
+        }
         
+        anim.SetBool("isMoving" , moving); 
         transform.position = newPosition;
         transform.localScale = newScale;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+         
+    {
+        if (collision.gameObject.tag.Equals("door"))
+
+         Debug.Log("hit");
+         SceneManager.LoadScene(2);
+            
+    }
 }
